@@ -1,9 +1,12 @@
+import "./styles.css";
 import { useState } from "react";
 import TodoInput from "./TodoInput.jsx";
 import TodoItems from "./TodoItems.jsx";
 
 export default function Todo() {
   const [todos, setTodos] = useState([]);
+  const [showComplete, setShowComplete] = useState(true);
+
   const handleTodoList = (title) => {
     const payload = {
       title: title,
@@ -25,10 +28,10 @@ export default function Todo() {
   
 
   return (
-    <>
-      <h1> TODO </h1>
+    <div className="App">
+      <h1> PERSONALIZE TODO </h1>
       <TodoInput handleTodoList={handleTodoList} />
-      {todos.map((todo) => (
+      {/* {todos.map((todo) => (
         <TodoItems
           key={todo.id}
           id={todo.id}
@@ -37,7 +40,15 @@ export default function Todo() {
           handleDlt={handleDlt}
           handleToggle={handleToggle}
         />
-      ))}
-    </>
+      ))} */}
+
+      <TodoItems data={todos.filter((item) => !item.status)} 
+        handleDlt={handleDlt}
+        handleToggle={handleToggle} />
+
+      <button className="btn" onClick={() => setShowComplete(!showComplete)}>{showComplete ? "HIDE COMPLETED" : "SHOW COMPLETED"}</button>
+
+      {showComplete && <TodoItems data={todos.filter((item) => item.status)} handleDlt={handleDlt} handleToggle={handleToggle}/>}
+    </div>
   );
 }
